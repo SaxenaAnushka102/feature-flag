@@ -174,7 +174,7 @@ Response
 }
 ```
 ## Evaluation Flow
-Check default state
-Evaluate rules
-Apply rollout percentage
-Return result
+- Check default state
+- Evaluate rules
+- Apply rollout percentage
+- Return result
