@@ -27,14 +27,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      # Run static analysis (Checkstyle - optional if configured)
-      - name: Run Checkstyle
-        run: mvn checkstyle:check || true
-
-      # SpotBugs (optional if plugin exists)
-      - name: Run SpotBugs
-        run: mvn com.github.spotbugs:spotbugs-maven-plugin:check || true
-
       # Package JAR
       - name: Package application
         run: mvn package -DskipTests
