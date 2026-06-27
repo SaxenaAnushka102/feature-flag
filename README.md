@@ -80,3 +80,101 @@ flowchart TD
   - Feature flag retrieval flow
 - Service layer is designed to be mock-friendly for isolated testing
 - Cache invalidation logic is planned for future enhancement testing
+
+# API Design
+
+The Feature Flag Service exposes RESTful APIs for creating, retrieving, and evaluating feature flags.
+
+All APIs are prefixed with:
+
+
+/api/feature-flags
+
+
+---
+
+## 1. Create Feature Flag
+
+### `POST /api/feature-flags`
+
+Creates a new feature flag with default state, rollout percentage, and optional rules.
+
+### Request Body
+
+```json
+{
+  "name": "dark_mode",
+  "defaultState": false,
+  "rolloutPercentage": 30,
+  "rules": [
+    {
+      "attribute": "country",
+      "operator": "EQUALS",
+      "value": "IN",
+      "enabled": true
+    }
+  ]
+}
+```
+### Response
+```json
+{
+  "id": 1,
+  "name": "dark_mode",
+  "defaultState": false,
+  "rolloutPercentage": 30,
+  "rules": [
+    {
+      "id": 1,
+      "attribute": "country",
+      "operator": "EQUALS",
+      "value": "IN",
+      "enabled": true
+    }
+  ]
+}
+```
+## 2. Get Feature Flag by Name
+GET /api/feature-flags/{name}
+
+Fetch a feature flag configuration.
+
+Example
+GET /api/feature-flags/dark_mode
+Response
+{
+  "id": 1,
+  "name": "dark_mode",
+  "defaultState": false,
+  "rolloutPercentage": 30
+}
+## 3. Evaluate Feature Flag (Core API)
+POST /api/feature-flags/evaluate
+
+Evaluates whether a feature is enabled for a given user context.
+
+Request Body
+```json
+{
+  "featureName": "dark_mode",
+  "userId": "user123",
+  "attributes": {
+    "country": "IN",
+    "device": "mobile",
+    "plan": "premium"
+  }
+}
+```
+Response
+```json
+{
+  "featureName": "dark_mode",
+  "enabled": true,
+  "reason": "RULE_MATCH"
+}
+```
+## Evaluation Flow
+Check default state
+Evaluate rules
+Apply rollout percentage
+Return result
