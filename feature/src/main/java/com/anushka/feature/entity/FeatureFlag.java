@@ -39,11 +39,31 @@ public class FeatureFlag {
     )
     private List<Rule> rules = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "featureFlag",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<FeatureOverride> overrides = new ArrayList<>();
+
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private int rolloutPercentage;
+
+    public int getRolloutPercentage() {
+        return rolloutPercentage;
+    }
+
+    public void setRolloutPercentage(int rolloutPercentage) {
+        this.rolloutPercentage = rolloutPercentage;
+    }
 
     @PrePersist
     public void prePersist() {
@@ -56,6 +76,8 @@ public class FeatureFlag {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    
 
     // Getters and Setters
 
@@ -97,5 +119,21 @@ public class FeatureFlag {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public List<FeatureOverride> getOverrides() {
+        return overrides;
+    }
+
+    public void setOverrides(List<FeatureOverride> overrides) {
+        this.overrides = overrides;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

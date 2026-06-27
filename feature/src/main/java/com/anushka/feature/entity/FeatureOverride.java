@@ -11,15 +11,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "rules")
-public class Rule {
+@Table(name = "feature_overrides")
+public class FeatureOverride {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String attribute;
+    private String userId;
 
     public Long getId() {
         return id;
@@ -29,28 +29,12 @@ public class Rule {
         this.id = id;
     }
 
-    public String getAttribute() {
-        return attribute;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public boolean isEnabled() {
@@ -70,16 +54,11 @@ public class Rule {
     }
 
     @Column(nullable = false)
-    private String operator;
-
-    @Column(name = "rule_value")
-private String value;
-
-    @Column(nullable = false)
     private boolean enabled;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feature_flag_id")
+    @JoinColumn(name = "feature_flag_id", nullable = false)
     private FeatureFlag featureFlag;
 
+    // getters and setters
 }
