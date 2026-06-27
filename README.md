@@ -63,4 +63,20 @@ flowchart TD
     H -->|Yes| I["Return rule result"]
     H -->|No| J["Return default state"]
 ```
+### Validation & Error Handling
 
+- Strict validation on all incoming API payloads using DTO-level validation.
+- Graceful fallback to default feature state if:
+  - Rule evaluation fails
+  - Invalid user context is provided
+  - Database is temporarily unavailable (future improvement)
+- Global exception handling via `@RestControllerAdvice` ensures consistent API error responses.
+
+### Testing Strategy
+
+- Unit tests cover:
+  - Rule evaluation logic
+  - Rollout percentage decisions
+  - Feature flag retrieval flow
+- Service layer is designed to be mock-friendly for isolated testing
+- Cache invalidation logic is planned for future enhancement testing
